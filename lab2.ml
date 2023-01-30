@@ -129,8 +129,13 @@ let third_element (lst : int list) : bool * int =
 Part 2: First-order functional programming with lists
 
 We'll start with some "finger exercises" defining simple functions
-before moving on to more complex problems. As a reminder, here's the
-definition for the length function of type `int list -> int`:
+before moving on to more complex problems. The intention in this part
+of the lab is for you to implement these functions by explicit
+recursion. Only later, in part 3 of this lab, will we make use of the
+`map`/`fold`/`filter` higher-order functions.
+
+As a reminder, here's the definition for the length function of type
+`int list -> int` implemented in this explicit recursion style:
 
     let rec length (lst : int list) : int =
       match lst with
@@ -155,7 +160,7 @@ Thorough testing is important in all your work, and we hope to impart
 this view to you in CS51. Testing will help you find bugs, avoid
 mistakes, and teach you the value of short, clear functions. In the
 file `lab2_tests.ml`, we've put some prewritten tests for `square_all`
-using the testing method of Section 6.5 in the book. Spend some time
+using the testing method of Section 6.7 in the book. Spend some time
 understanding how the testing function works and why these tests are
 comprehensive. You may want to add some tests for other functions in
 the lab to get some practice with automated unit testing.
@@ -267,8 +272,8 @@ let rec zip (x : int list) (y : int list) : (int * int) list =
    generates a warning about the pattern match not being
    exhaustive. As in `max_list` above, the ramifications of this issue
    and how best to address it are discussed at length in Chapter 10,
-   Section 10.2.2.That discussion is beyond the scope of lab 2, but
-   feel free to read ahead if you're interested. *)
+   Section 10.2.That discussion is beyond the scope of lab 2, but feel
+   free to read ahead if you're interested. *)
 
 (*......................................................................
 Exercise 8: Recall from Chapter 7 the definition of the function
@@ -364,9 +369,10 @@ let sum_ho : int list -> int =
   List.fold_left (+) 0 ;;
 
 (* One of the key advantages of curried functions (like `fold_left`)
-   is that they can be partially applied. We've taken advantage of
-   that in the definition above, by defining `sum_ho` as a partially
-   applied `fold_left`, rather than as
+   is that they can be partially applied. (See Section 8.2 in the
+   textbook.) We've taken advantage of that in the definition above,
+   by defining `sum_ho` as a partially applied `fold_left`, rather
+   than as
 
      let sum_ho (lst : int list) : int =
        List.fold_left (+) 0 lst ;;
@@ -388,18 +394,18 @@ let sum_ho : int list -> int =
      # List.fold_left (+) 0 [1;2;3] ;;
      - : int = 6
 
-  You may also note the use of parentheses in the expression
-  `(+)`. The `+` operator is an example of an "infix" operator, an
-  operator that goes in between its arguments rather than in front of
-  them.  When using `+` as an argument to higher-order functions, we
-  generally need to remove that infix property, so that it will be
-  parsed as a prefix operator like most other functions. Wrapping the
-  operator in parentheses induces this behavior.
+   You may also note the use of parentheses in the expression
+   `(+)`. The `+` operator is an example of an "infix" operator, an
+   operator that goes in between its arguments rather than in front of
+   them.  When using `+` as an argument to higher-order functions, we
+   generally need to remove that infix property, so that it will be
+   parsed as a prefix operator like most other functions. Wrapping the
+   operator in parentheses induces this behavior.
 
-    # 3 + 4 ;;
-    - : int = 7
-    # (+) 3 4
-    - : int = 7
+     # 3 + 4 ;;
+     - : int = 7
+     # (+) 3 4
+     - : int = 7
  *)
 
 (*......................................................................
@@ -424,14 +430,14 @@ Use `map2` to reimplement `zip` and call it `zip_ho`.
 let zip_ho : int list -> int list -> (int * int) list =
   List.map2 (fun first second -> first, second) ;;
 
-(* Note the rejiggering of the first line to allow the function zip_ho
-   to take advantage of partial application, so that `zip_ho` is the
-   functional output of the higher-order function `map2`. Without the
-   rejiggering, you'd probably implement it as:
+(* Note the rejiggering of the first line to allow the function
+   `zip_ho` to take advantage of partial application, so that `zip_ho`
+   is the functional output of the higher-order function
+   `map2`. Without the rejiggering, you'd probably implement it as:
 
     let zip_ho (x : int list) (y : int list) : (int * int) list =
       List.map2 (fun first second -> first, second) x y ;;
- *)
+   *)
 
 (*......................................................................
 Exercise 12: Define a function `evens`, using these higher-order
